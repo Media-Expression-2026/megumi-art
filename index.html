@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>フルスクリーン・スクロール</title>
+    <style>
+        /* 全体のスクロール設定 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            /* スナップ機能を有効にする（y軸方向・必須） */
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+        }
+/* 各セクション（ページ）の共通スタイル */
+        .section {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            color: white;
+            font-family: sans-serif;
+            font-weight: bold;
+            scroll-snap-align: start;
+
+            /* 画像の設定：中央に配置して隙間なく表示する */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        /* 背景画像や色の設定 */
+        .page1 { background-image: url("photo1.png"); }
+        .page2 { background-image: url("photo2.png"); }
+        .page3 { background-image: url("photo3.png"); }
+        .page4 { background-image: url("photo4.png");}
+        .image-content {
+            max-width: 80%;
+            border: 10px solid white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <section class="section page1">
+        <div>01</div>
+    </section>
+
+    <section class="section page2">
+        <div>02</div>
+    </section>
+
+    <section class="section page3">
+        <div>03</div>
+    </section>
+
+     <section class="section page4">
+        <div>04</div>
+    </section>
+
+
+</body>
+</html>
