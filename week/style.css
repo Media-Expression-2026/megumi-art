@@ -1,0 +1,16 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000; /* 背景を黒にして隙間を完全に目立たなくします */
+    overflow: hidden; /* スクロールバーを完全に非表示 */
+    cursor: pointer;
+}
+
+#display-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 画像の比率を保ったまま、画面いっぱいに隙間なく引き伸ばします */
+    display: block; /* 画像の下にできるわずかな隙間を解消 */
+}
