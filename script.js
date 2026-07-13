@@ -1,68 +1,85 @@
-// 表示させたい画像の配列
-const images = [
-    "a1.png",
-    "a2.png",
-    "a3.png"
-];
+let rotX = 0;
+let rotY = 0;
 
-// すべての音楽の最大音量（0.0 〜 1.0 の間で指定。0.2 は20%の音量）
-const maxVolume = 0.1;
-
-let currentIndex = 0; // 初期状態（a1.png）
-let isStarted = false; // 最初に音楽をスタートしたかどうかのフラグ
-
-const displayImage = document.getElementById('display-image');
-
-// 3つの音楽要素を配列で管理
-const audios = [
-    document.getElementById('music1'),
-    document.getElementById('music2'),
-    document.getElementById('music3')
-];
-
-// 初期設定：すべての音楽にループを設定し、音量を下げ、ミュート状態を正しくセットする
-audios.forEach((audio, index) => {
-    audio.loop = true;       // JavaScript側でも確実にループ再生を有効化
-    audio.volume = maxVolume; // 全体の音量を一括で下げる
-    
-    // 初期状態（インデックス0以外）はあらかじめミュートにしておく
-    if (index === 0) {
-        audio.muted = false;
-    } else {
-        audio.muted = true;
-    }
-});
-
-// 指定されたインデックスの音楽だけ音を出し、他をミュートにする関数
-function updateMuteStatus(activeIndex) {
-    audios.forEach((audio, index) => {
-        if (index === activeIndex) {
-            audio.muted = false; // 表示中の画像に対応する音楽のミュートを解除
-        } else {
-            audio.muted = true;  // それ以外の音楽をすべてミュート
-        }
-    });
+// 1. p5.js: 初期設定
+function setup() {
+    // 左下のコンテナ（200x200）の中にWEBGLキャンバスを作成
+    let canvas = createCanvas(200, 200, WEBGL);
+    canvas.parent('canvas-container');
+    noStroke();
 }
 
-// 画面全体がタップされた時の処理
-document.body.addEventListener('click', () => {
-    // 【最初の1タップ目のみ】すべての音楽を同時に、裏でループ再生開始する
-    if (!isStarted) {
-        audios.forEach(audio => {
-            audio.play().catch(error => console.error("再生エラー:", error));
+// 2. p5.js: 毎フレームの描画処理（ここで土星を作ります）
+function draw() {
+    // キャンバス背景を完全に透明にして、Webサイトの宇宙背景が見えるようにする
+    clear(); 
+
+    // ライト（光）を当てて、綺麗な球体と輪っかの立体感を出す
+    ambientLight(60);
+    directionalLight(255, 255, 255, 0.5, 0.5, -0.5); // 斜め前からの光
+    directionalLight(150, 150, 180, -0.5, -0.5, -0.5); // 宇宙の反射光
+
+    // --- 🪐 マウスの移動方向・距離・速さによって回転量を計算 ---
+    if (mouseIsPressed || mouseX !== pmouseX || mouseY !== pmouseY) {
+        rotY += movedX * 0.002; // 左右の動きでY軸回転
+        rotX += movedY * 0.002; // 上下の動きでX軸回転
+    } else {
+        // マウスが動いていない時は、慣性でゆっくり自動回転させる
+        rotY += 0.0005;
+    }
+
+    push();
+    // ① まず地軸の傾き（約23.4度）をセット
+    rotateZ(radians(23.4));
+    
+    // ② マウス連動による回転を適用
+    rotateY(rotY);
+    rotateX(rotX);
+
+    // 🪐 土星の「本体（球体）」を描画
+// 🪐 土星の「本体（球体）」を描画
+    push();
+    fill(240, 210, 160); // 土星っぽいクリーム色
+    // 【変更前】 sphere(40, 24, 24); 
+    sphere(28, 24, 24);   // 👈 半径を 40 から 28 に小さくしました
+    pop();
+
+    // 🪐 土星の「輪っか（薄い円盤）」を描画
+    push();
+    fill(210, 190, 160, 180); // 少し透明感のある輪っかの色
+    rotateX(1.57); // 輪っかを水平に寝かせる
+    // torus(輪全体の半径, 輪の太さ)
+    // 【変更前】 torus(65, 12, 30, 2);
+    torus(45, 8, 30, 2);  // 👈 全体の半径を 65→45 に、太さを 12→8 に小さくしました
+    pop();
+    pop();
+}
+
+// ----------------------------------------------------
+// 3. その他のWebページエフェクト（スクロール・ホバー消去）
+// ----------------------------------------------------
+function initPageEffects() {
+    // 背景画像のスクロールパララックス
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    if (maxScroll > 0) {
+        window.addEventListener('scroll', function() {
+            const scrolled = window.scrollY;
+            const scrollPercent = scrolled / maxScroll;
+            document.body.style.backgroundPosition = `center ${scrollPercent * 100}%`;
         });
-        isStarted = true;
     }
 
-    // 次の画像（インデックス）に進める
-    currentIndex++;
-    if (currentIndex >= images.length) {
-        currentIndex = 0;
+    // リンクホバー時にp5.jsキャンバスを消す処理
+    const canvasContainer = document.getElementById('canvas-container');
+    const links = document.querySelectorAll('.card a');
+
+    if (canvasContainer) {
+        links.forEach(link => {
+            link.addEventListener('mouseenter', () => canvasContainer.classList.add('hide'));
+            link.addEventListener('mouseleave', () => canvasContainer.classList.remove('hide'));
+        });
     }
+}
 
-    // 画像の変更
-    displayImage.src = images[currentIndex];
-
-    // 画像に連動してミュート状態を更新（裏で流れている音楽の音量を切り替える）
-    updateMuteStatus(currentIndex);
-});
+// ページ読み込み完了時にWebエフェクトを起動
+window.addEventListener('DOMContentLoaded', initPageEffects);

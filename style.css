@@ -1,16 +1,156 @@
-body, html {
+/* 全体のリセットと背景設定 */
+body {
     margin: 0;
     padding: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #000; /* 背景を黒にして隙間を完全に目立たなくします */
-    overflow: hidden; /* スクロールバーを完全に非表示 */
-    cursor: pointer;
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    color: #ffffff;
+    background-color: #0b0c10;
+    background-image: url('JamesWebb_29 Cygni b.jpg');
+    background-size: cover; 
+    background-position: center top; 
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+    min-height: 150vh; 
 }
 
-#display-image {
+/* 🪐 p5.jsキャンバス用の固定コンテナ（左下固定） */
+#canvas-container {
+    position: fixed;
+    left: 10px;
+    bottom: 10px;
+    width: 200px;
+    height: 200px;
+    z-index: 1000;
+    pointer-events: none; /* 後ろのコンテンツをクリック可能にする */
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* リンクホバー時にフッと消える演出 */
+#canvas-container.hide {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+}
+
+/* キャンバス自体のサイズをコンテナにフィットさせる */
+#canvas-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* 全体を覆うコンテナ */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+/* 👑 ヘッダーデザイン（カードとは分離し、中央寄せで美しく） */
+header {
+    text-align: center;
+    margin-bottom: 60px;
+    padding: 30px;
+    border: 2px solid #ffffff;
+    background-color: transparent; 
+    backdrop-filter: none;
+    box-shadow: none;
+    max-width: 800px;     /* ヘッダーの幅もカードと揃える */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    letter-spacing: 3px;
+}
+
+header p {
+    margin: 15px 0 0 0;
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* 各カード（白枠）のデザイン調整 */
+.card {
+    border: 2px solid #ffffff;
+    background-color: transparent;
+    backdrop-filter: none;
+    box-shadow: none;
+    padding: 25px 35px; /* 余白を少し広げて、横並びの文字が窮屈に見えないように調整 */
+    margin-bottom: 40px;
+    transition: all 0.3s ease;
+    
+    /* 枠自体の横幅をスリムに抑えて中央寄せ */
+    max-width: 800px;   
+    margin-left: auto;  
+    margin-right: auto; 
+}
+
+/* マウスを乗せたときだけ、少し白く光る演出 */
+.card:hover {
+    background-color: rgba(255, 255, 255, 0.1); 
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.card h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+    border-bottom: 2px solid #ffffff;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+/* 項目を横並びにする設定 */
+.card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    display: flex;         /* 横並びにする設定 */
+    flex-wrap: wrap;       /* 画面が狭くなったら自動で折り返す */
+    gap: 40px;             /* 【調整】項目と項目の間の横のスキマを30pxから40pxに広げてゆったりさせました */
+    justify-content: flex-start; /* 左詰めで並べる */
+}
+
+/* 横並び用に余白を調整 */
+.card li {
+    margin-bottom: 0;      
+    font-size: 1.1rem;
+}
+
+/* リンクのデザイン（ホバー時に下線がスッと伸びるアニメーションを維持） */
+.card a {
+    color: #ffffff;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.card a::after {
+    content: '';
+    position: absolute;
     width: 100%;
-    height: 100%;
-    object-fit: cover; /* 画像の比率を保ったまま、画面いっぱいに隙間なく引き伸ばします */
-    display: block; /* 画像の下にできるわずかな隙間を解消 */
+    transform: scaleX(0);
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: #ffffff;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.card a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* フッター */
+footer {
+    text-align: center;
+    margin-top: 80px;
+    padding: 20px;
+    font-size: 0.9rem;
+    opacity: 0.6;
 }
