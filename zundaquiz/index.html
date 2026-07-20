@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ずんだもんクイズ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="stage">
+  <div class="wrap">
+
+    <!-- ===== START SCREEN ===== -->
+    <section id="screen-start" class="card title-block">
+      <div class="mascot-hero" id="heroMascot"></div>
+      <h1 class="game-title display">ずんだもんクイズなのだ</h1>
+      <p class="lead">ずんだもんが出題する全10問のクイズなのだ。<br>ずんだ豆知識から雑学まで、答えられるか挑戦するのだ！</p>
+      <button class="cta display" id="startBtn">クイズを始めるのだ ▶</button>
+      <p class="meta-line">全10問・制限時間なし・何度でも挑戦できるのだ</p>
+    </section>
+
+    <!-- ===== QUIZ SCREEN ===== -->
+    <section id="screen-quiz" class="card hidden">
+      <div class="pod-track" id="podTrack"></div>
+
+      <div class="mascot-row">
+        <div class="mascot-wrap bounce" id="quizMascot"></div>
+        <div class="bubble" id="quizBubble">がんばるのだ！</div>
+      </div>
+
+      <div class="q-count-row">
+        <span class="q-count" id="qCount">だい1もん / 10もん</span>
+        <button class="audio-btn" id="playAudioBtn" type="button" aria-label="問題を読み上げる">🔊 読み上げ</button>
+      </div>
+      <p class="question" id="qText"></p>
+      <div class="choices" id="choices"></div>
+      <div class="next-row">
+        <button class="next-btn display hidden" id="nextBtn">つぎへ ▶</button>
+      </div>
+    </section>
+
+    <!-- ===== RESULT SCREEN ===== -->
+    <section id="screen-result" class="card hidden">
+      <div class="mascot-hero" id="resultMascot"></div>
+      <p class="result-title display" id="resultTitle">けっかはっぴょうなのだ</p>
+      <p class="score-big display" id="scoreBig">0<span>/10もん せいかい</span></p>
+      <span class="rank-badge" id="rankBadge"></span>
+      <div class="bubble" id="resultBubble" style="margin-top:6px;"></div>
+      <div class="result-actions">
+        <button class="cta display" id="retryBtn">もういちど挑戦するのだ</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
